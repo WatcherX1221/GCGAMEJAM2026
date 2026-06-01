@@ -38,9 +38,6 @@ public class PlayerControls : MonoBehaviour
 
         // Component Refs
         rb = GetComponent<Rigidbody2D>();
-
-        // Aim object references
-        AimObjects.AddRange(GameObject.FindGameObjectsWithTag("Aim"));
     }
 
     void Update()
@@ -55,7 +52,7 @@ public class PlayerControls : MonoBehaviour
 
         for (int i = 0; i < AimObjects.Count; i++)
         {
-            AimObjects[i].transform.position = Vector2.Lerp(transform.position, -ShotPower, ((float)i + 1) / AimObjects.Count);
+            AimObjects[i].transform.localPosition = Vector2.Lerp(Vector2.zero, -ShotPower, ((float)i + 1) / AimObjects.Count);
 
         }
 
@@ -67,6 +64,6 @@ public class PlayerControls : MonoBehaviour
 
     public void LaunchAtom(Vector2 power)
     {
-        rb.AddForce(-(power * 30f), ForceMode2D.Force);
+        rb.linearVelocity = -power * 3;
     }
 }

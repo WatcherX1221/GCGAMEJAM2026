@@ -1102,7 +1102,10 @@ MonoBehaviour:
   MousePositionVector: {x: 0, y: 0}
   GameCamera: {fileID: 519420031}
   MouseDistPlayer: {x: 0, y: 0}
-  AimObjects: []
+  AimObjects:
+  - {fileID: 1449233154}
+  - {fileID: 1261272096}
+  - {fileID: 2002337628}
   PowerLimit: 5
   ShotPower: {x: 0, y: 0}
 --- !u!50 &1696773073
@@ -1118,8 +1121,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0.25
-  m_AngularDamping: 0.25
+  m_LinearDamping: 1.5
+  m_AngularDamping: 1.5
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: dc307c2527168be42ae3f95a3bae5541, type: 2}
   m_IncludeLayers:
