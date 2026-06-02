@@ -25,10 +25,13 @@ public class PlayerControls : MonoBehaviour
 
     // Gameplay
     public float PowerLimit = 5f;
+    public float PowerMult = 1f;
     public Vector2 ShotPower;
     public int playerMoveCooldown;
 
     public GameManager gameManager;
+
+    public Vector2 bounds = new Vector2(10f, 6f);
 
     Rigidbody2D rb;
     void Start()
@@ -66,10 +69,12 @@ public class PlayerControls : MonoBehaviour
             }
 
             // Launch the atom if the cooldown is available, then reset cooldown.
-            if (MouseLeftClick.WasPressedThisFrame() && playerMoveCooldown <= 0)
+            if (MouseLeftClick.WasPressedThisFrame() && playerMoveCooldown <= 0 && gameManager.scoreManager.MovesLeft > 0)
             {
                 LaunchAtom(ShotPower);
-                playerMoveCooldown = 150;
+                playerMoveCooldown = 100;
+                gameManager.scoreManager.MovesLeft -= 1;
+                gameManager.ScoreUIUpdate(gameManager.scoreManager);
             }
         }
     }
@@ -77,7 +82,7 @@ public class PlayerControls : MonoBehaviour
     public void LaunchAtom(Vector2 power)
     {
         // Launch the atom inverse to the power value
-        rb.linearVelocity = -power * 3;
+        rb.linearVelocity = -power * PowerMult;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -111,7 +116,10 @@ public class PlayerControls : MonoBehaviour
         {
             playerMoveCooldown -= 1;
         }
+
+        if(Mathf.Abs(transform.position.x) > bounds.x || Mathf.Abs(transform.position.y) > bounds.y)
+        {
+            transform.position = new Vector2(0, 0);
+        }
     }
-
-
 }

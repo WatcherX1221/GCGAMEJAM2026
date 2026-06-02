@@ -2,6 +2,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class ScoreManager
 {
@@ -16,11 +17,16 @@ public class GameManager : MonoBehaviour
 
     public GameObject chargeUI;
     public GameObject neutronUI;
+    public GameObject moveUI;
 
     public bool IsPlaying;
 
+    List<GameObject> uiPanels = new List<GameObject>();
+
     private void Start()
     {
+        uiPanels.AddRange(GameObject.FindGameObjectsWithTag("UI"));
+
         IsPlaying = false;
         scoreManager = new ScoreManager();
         UpdateScores(0, 0);
@@ -37,24 +43,55 @@ public class GameManager : MonoBehaviour
     {
         chargeUI.GetComponent<TMP_Text>().text = "Charge: " + score.ChargeScore;
         neutronUI.GetComponent<TMP_Text>().text = "Neutrons: " + score.NeutronScore;
+        moveUI.GetComponent<TMP_Text>().text = "Moves: " + score.MovesLeft;
     }
 
     public void UpdateUI(int currentPage)
-    {
-        List<GameObject> uiElements = new List<GameObject>();
-
-        uiElements.AddRange(GameObject.FindGameObjectsWithTag("UI"));
-
-        for (int i = 0; i < uiElements.Count; i++)
+    {       
+        switch(currentPage)
         {
-            if ((int)uiElements[i].GetComponent<UIType>().uiType == currentPage)
-            {
-                uiElements[i].gameObject.SetActive(true);   
-            }
-            else
-            {
-                uiElements[i].gameObject.SetActive(false);
-            }
+            // Generate
+            case 0:
+                foreach (GameObject go in uiPanels)
+                {
+                    if (go.name == "GeneratePanel")
+                    {
+                        go.SetActive(true);
+                    }
+                    else
+                    {
+                        go.SetActive(false);
+                    }
+                }
+                break;
+            // Level Select
+            case 1:
+                foreach (GameObject go in uiPanels)
+                {
+                    if (go.name == "LevelSelectPanel")
+                    {
+                        go.SetActive(true);
+                    }
+                    else
+                    {
+                        go.SetActive(false);
+                    }
+                }
+                break;
+            // Gameplay
+            case 2:
+                foreach (GameObject go in uiPanels)
+                {
+                    if (go.name == "GameplayPanel")
+                    {
+                        go.SetActive(true);
+                    }
+                    else
+                    {
+                        go.SetActive(false);
+                    }
+                }
+                break;
         }
         
     }
