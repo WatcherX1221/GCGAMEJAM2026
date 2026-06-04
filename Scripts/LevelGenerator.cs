@@ -43,6 +43,7 @@ public class LevelGenerator : MonoBehaviour
             case false:
                 UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
                 levelSeed = (int)DateTime.Now.Ticks;
+                seed = levelSeed;
                 break;
         }
         Debug.Log("Level Seed: " + levelSeed);

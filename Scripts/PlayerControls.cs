@@ -76,6 +76,11 @@ public class PlayerControls : MonoBehaviour
                 gameManager.scoreManager.MovesLeft -= 1;
                 gameManager.ScoreUIUpdate(gameManager.scoreManager);
             }
+
+            if(gameManager.scoreManager.MovesLeft <= 0 && playerMoveCooldown <= 0)
+            {
+                gameManager.EndGame();
+            }
         }
     }
 
