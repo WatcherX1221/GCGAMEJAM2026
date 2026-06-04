@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:ScrollView name="SavedScores" enabled="true" usage-hints="None" vertical-page-size="100" horizontal-page-size="50" horizontal-scroller-visibility="AlwaysVisible" style="height: 205px; opacity: 1;">
+        <ui:VisualElement name="ScoreContainer" style="flex-grow: 10; flex-direction: column; height: 200px; align-items: flex-start; margin-left: 5px; padding-top: 15px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; padding-left: 15px; padding-bottom: 15px; padding-right: 15px; flex-wrap: nowrap; flex-basis: 150px;">
+            <ui:Label text="Seed" name="SeedLabel" enable-rich-text="true" display-tooltip-when-elided="true" usage-hints="None" style="width: auto; font-size: 20px; -unity-font-style: bold; color: rgb(0, 0, 0); align-content: auto; justify-content: flex-start; -unity-font-definition: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&amp;guid=e3265ab4bf004d28a9537516768c1c75&amp;type=3#LiberationSans&quot;); white-space: pre; -unity-text-align: middle-left; text-overflow: clip; align-items: flex-end; align-self: stretch; height: 30px; margin-bottom: 4px; padding-left: 2px; flex-direction: column;">
+                <ui:Label text="Label" name="Value" style="width: auto; white-space: nowrap; align-items: auto; justify-content: flex-start; align-self: auto; -unity-text-align: middle-right; align-content: auto; flex-direction: column; height: auto; margin-bottom: 4px; font-size: 16px; -unity-font-style: bold; position: relative;" />
+            </ui:Label>
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

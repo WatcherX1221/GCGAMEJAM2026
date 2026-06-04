@@ -9,6 +9,7 @@ public class ScoreManager
     public int ChargeScore;
     public int NeutronScore;
     public int MovesLeft;
+    public int SubatomsLeft;
 }
 
 public class GameManager : MonoBehaviour
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         chargeUI.GetComponent<TMP_Text>().text = "Charge: " + score.ChargeScore;
         neutronUI.GetComponent<TMP_Text>().text = "Neutrons: " + score.NeutronScore;
-        moveUI.GetComponent<TMP_Text>().text = "Moves: " + score.MovesLeft;
+        moveUI.GetComponent<TMP_Text>().text = "Moves: " + score.MovesLeft; 
     }
 
     public void UpdateUI(int currentPage)
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
             case 1:
                 foreach (GameObject go in uiPanels)
                 {
-                    if (go.name == "LevelSelectPanel")
+                    if (go.name == "ScoresPanel")
                     {
                         go.SetActive(true);
                     }
