@@ -101,18 +101,21 @@ public class PlayerControls : MonoBehaviour
                 // Double the player's current velocity
                 rb.linearVelocity = rb.linearVelocity * 2;
                 gameManager.UpdateScores(1, 0, -1, false);
-                collision.gameObject.SetActive(false);
+                GameCamera.GetComponent<CameraShake>().ShakeCamera();
+                collision.gameObject.GetComponent<SubatomDisappear>().DisappearEffect();
                 break;
             case "Neutron":
                 // Add to the neutron score
                 gameManager.UpdateScores(0, 1, -1, false);
-                collision.gameObject.SetActive(false);
+                GameCamera.GetComponent<CameraShake>().ShakeCamera();
+                collision.gameObject.GetComponent<SubatomDisappear>().DisappearEffect();
                 break;
             case "Electron":
                 // Reverse the player's current velocity and double it
                 rb.linearVelocity = -rb.linearVelocity * 2;
                 gameManager.UpdateScores(-1, 0, -1, false);
-                collision.gameObject.SetActive(false);
+                GameCamera.GetComponent<CameraShake>().ShakeCamera();
+                collision.gameObject.GetComponent<SubatomDisappear>().DisappearEffect();
                 break;
         }
     }

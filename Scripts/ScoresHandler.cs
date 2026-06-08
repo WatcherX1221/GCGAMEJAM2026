@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.IO;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class ScoresHandler : MonoBehaviour
 {
@@ -24,7 +25,6 @@ public class ScoresHandler : MonoBehaviour
 
         string dataPath = System.IO.Path.Combine(Application.dataPath, "saves");
 
-
         try
         {
             if (!Directory.Exists(dataPath))
@@ -42,17 +42,17 @@ public class ScoresHandler : MonoBehaviour
 
         if (needsLoadScore)
         {
-            if (!hasLoadedScoresThisSession)
+            GameObject[] oldObjects = GameObject.FindGameObjectsWithTag("SeedInstance");
+            if (oldObjects.Length > 0)
             {
-                ReadFiles(dataPath);
-                hasLoadedScoresThisSession = true;
-            }
-            if (hasLoadedScoresThisSession)
-            {
-                LoadedScores = new SavedScores[0];
-                ReadFiles(dataPath);
-                hasLoadedScoresThisSession = true;
-            }
+                for (int i = 0; i < oldObjects.Length; i++)
+                {
+                    Destroy(oldObjects[i]);
+                }
+            }    
+            LoadedScores = new SavedScores[0];
+            ReadFiles(dataPath);
+            hasLoadedScoresThisSession = true;
             if (LoadedScores.Length > 0)
             {
                 for (int i = 0; i < LoadedScores.Length; i++)
@@ -64,14 +64,12 @@ public class ScoresHandler : MonoBehaviour
             }
             needsLoadScore = false;
         }
-
     }
-
     public void SaveSeed()
     {
 
         string dataPath = System.IO.Path.Combine(Application.dataPath, "saves");
-        Debug.Log("Seed: " + levelScore.Seed + "Charge: " + levelScore.Charge + "Subatoms: " + levelScore.Subatoms + "Neutrons: " + levelScore.Neutrons + "Moves: " + levelScore.MovesLeft);
+        int instanceOfSeedInSave = 0;
         try
         {
             if (!Directory.Exists(dataPath))
@@ -79,12 +77,24 @@ public class ScoresHandler : MonoBehaviour
                 Directory.CreateDirectory(dataPath);
                 Debug.Log("Created Directory at:" + dataPath);
             }
-            dataPath += "/" + levelScore.Seed + ".json";
+            string[] allFiles = Directory.GetFiles(dataPath);
+            for (int i = 0; i < allFiles.Length; i++)
+            {
+                Debug.Log("Should end with: " + levelScore.Seed.ToString() + "_" + (instanceOfSeedInSave + 1) + ".json");
+                if (allFiles[i].EndsWith(levelScore.Seed.ToString() + "_" + (instanceOfSeedInSave + 1) + ".json"))
+                {
+                    instanceOfSeedInSave++;
+                }
+            }
+            Debug.Log("Instances of seed " + levelScore.Seed + " : " + instanceOfSeedInSave);
+            Debug.Log("Seed: " + levelScore.Seed + "Charge: " + levelScore.Charge + "Subatoms: " + levelScore.Subatoms + "Neutrons: " + levelScore.Neutrons + "Moves: " + levelScore.MovesLeft);
+            dataPath += "/" + levelScore.Seed + "_" + (instanceOfSeedInSave + 1) + ".json";
 
             try
             {
                 string saveData = JsonUtility.ToJson(levelScore);
                 System.IO.File.WriteAllText(dataPath, saveData);
+                Debug.Log("Saved file:" + dataPath);
             }
             catch (System.Exception ex)
             {
@@ -103,16 +113,34 @@ public class ScoresHandler : MonoBehaviour
     {
         string[] files = System.IO.Directory.GetFiles(path);
         LoadedScores = new SavedScores[files.Length];
-        for (int i = 0; i < files.Length; i++)
+        Debug.Log("File Count: " + files.Length);
+        if(files.Length > 0)
         {
-            string fileData = System.IO.File.ReadAllText(files[i]);
-            LoadedScores[i] = JsonUtility.FromJson<SavedScores>(fileData);
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (!files[i].Contains(".meta"))
+                {
+                    Debug.Log("Loop count: " + i);
+                    string fileData = System.IO.File.ReadAllText(files[i]);
+                    LoadedScores[i] = JsonUtility.FromJson<SavedScores>(fileData);
+                }
+            }
         }
     }
 
     public void DeleteSaveData()
     {
+        Debug.Log("Attempting Delete");
         string dataPath = System.IO.Path.Combine(Application.dataPath, "saves");
-        System.IO.Directory.Delete(dataPath);
+        Debug.Log("Path to delete: " + dataPath);
+        if (Directory.Exists(dataPath))
+        {
+            string[] saveFiles = System.IO.Directory.GetFiles(dataPath);
+            for (int i = 0;i < saveFiles.Length; i++)
+            {
+                System.IO.File.Delete(saveFiles[i]);
+                Debug.Log("Deleted: " +  saveFiles[i]);
+            }
+        }
     }
 }

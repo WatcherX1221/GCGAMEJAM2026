@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
             GetComponent<ScoresHandler>().levelScore.Neutrons = scoreManager.NeutronScore;
             GetComponent<ScoresHandler>().levelScore.Subatoms = scoreManager.SubatomsLeft;
         }
-        
+        GameObject.FindGameObjectWithTag("Player").GetComponent<AtomVisualController>().UpdateSprite(scoreManager.ChargeScore);
         ScoreUIUpdate(scoreManager);
 
         if (scoreManager.SubatomsLeft <= 0 && !initialUpdate)
@@ -126,9 +126,24 @@ public class GameManager : MonoBehaviour
     }
     public void EndGame()
     {
+        // Set is playing off so that player cannot input when they shouldn't
         IsPlaying = false;
-        Debug.Log(GetComponent<ScoresHandler>().levelScore);
+        // Save the scores for the seed
         GetComponent<ScoresHandler>().SaveSeed();
+        // Delete all remaining subatoms
+        for(int i = 0; i < GetComponent<LevelGenerator>().allSubatoms.Count; i++)
+        {
+            Destroy(GetComponent<LevelGenerator>().allSubatoms[i]);
+        }
+        GetComponent<LevelGenerator>().allSubatoms.Clear();
+        // Reset player position & velocity
+        GameObject.FindGameObjectWithTag("Player").transform.position = Vector2.zero;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+        // Recreate score manager instance to reset scores
+        scoreManager = new ScoreManager();
+        // Update the UI to fit
+        UpdateScores(0, 0, 0, true);
+        // Show game end UI
         UpdateUI(3);
     }
 }

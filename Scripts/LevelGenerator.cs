@@ -19,6 +19,8 @@ public class LevelGenerator : MonoBehaviour
 
     public List<GameObject> subatomPrefabs = new List<GameObject>();
 
+    public List<GameObject> allSubatoms = new List<GameObject>();
+
     public (int, int) minMaxObjects = (5, 50);
 
     public Vector2 spawnBounds;
@@ -37,6 +39,7 @@ public class LevelGenerator : MonoBehaviour
         switch(usesSeed)
         {
             case true:
+                int.TryParse(seedInput.GetComponent<TMP_InputField>().text, out seed);
                 UnityEngine.Random.InitState(seed);
                 levelSeed = seed;
                 break;
@@ -56,8 +59,9 @@ public class LevelGenerator : MonoBehaviour
             int subatomType = UnityEngine.Random.Range(0, 3);
 
             // Create new subatom
-            GameObject newProton = Instantiate(subatomPrefabs[subatomType], new Vector2(UnityEngine.Random.Range(-spawnBounds.x, spawnBounds.x), UnityEngine.Random.Range(-spawnBounds.y, spawnBounds.y)), transform.rotation);
+            GameObject newSubatom = Instantiate(subatomPrefabs[subatomType], new Vector2(UnityEngine.Random.Range(-spawnBounds.x, spawnBounds.x), UnityEngine.Random.Range(-spawnBounds.y, spawnBounds.y)), transform.rotation);
             Debug.Log("Loop count: " + i + "Subatom Type: " + subatomType);
+            allSubatoms.Add(newSubatom);
         }
 
         GetComponent<GameManager>().IsPlaying = true;
