@@ -32,6 +32,9 @@ public class PlayerControls : MonoBehaviour
 
     public GameManager gameManager;
 
+    [SerializeField]
+    AtomCombo atomSfx;
+
     public Vector2 bounds = new Vector2(10f, 6f);
 
     Rigidbody2D rb;
@@ -71,7 +74,7 @@ public class PlayerControls : MonoBehaviour
             }
 
             // Launch the atom if the cooldown is available, then reset cooldown.
-            if (MouseLeftClick.WasPressedThisFrame() && playerMoveCooldown <= 0 && gameManager.scoreManager.MovesLeft > 0)
+            if (MouseLeftClick.WasPressedThisFrame() && playerMoveCooldown <= 0 && gameManager.scoreManager.MovesLeft > 0 && rb.linearVelocity.magnitude < 0.25f)
             {
                 LaunchAtom(ShotPower);
                 playerMoveCooldown = 100;
@@ -83,6 +86,11 @@ public class PlayerControls : MonoBehaviour
             if(gameManager.scoreManager.MovesLeft <= 0 && playerMoveCooldown <= 0)
             {
                 gameManager.EndGame();
+            }
+
+            if(playerMoveCooldown <= 0 && rb.linearVelocity.magnitude < 0.25f)
+            {
+                atomSfx.subatomCombo = 0;
             }
         }
     }
@@ -104,12 +112,14 @@ public class PlayerControls : MonoBehaviour
                 gameManager.UpdateScores(1, 0, -1, false);
                 GameCamera.GetComponent<CameraShake>().ShakeCamera();
                 collision.gameObject.GetComponent<SubatomDisappear>().DisappearEffect();
+                atomSfx.PlayComboAudio();
                 break;
             case "Neutron":
                 // Add to the neutron score
                 gameManager.UpdateScores(0, 1, -1, false);
                 GameCamera.GetComponent<CameraShake>().ShakeCamera();
                 collision.gameObject.GetComponent<SubatomDisappear>().DisappearEffect();
+                atomSfx.PlayComboAudio();
                 break;
             case "Electron":
                 // Reverse the player's current velocity and double it
@@ -117,6 +127,7 @@ public class PlayerControls : MonoBehaviour
                 gameManager.UpdateScores(-1, 0, -1, false);
                 GameCamera.GetComponent<CameraShake>().ShakeCamera();
                 collision.gameObject.GetComponent<SubatomDisappear>().DisappearEffect();
+                atomSfx.PlayComboAudio();
                 break;
         }
     }

@@ -14,7 +14,7 @@ public class ScoreManager
 
     // Calculated Best scores
     public int MostNeutrons; // Simply the most amount of neutrons the player can collect, should be equal to the count of neutrons spawned
-    public int ParMoves; // An expected amount of moves left assuming the player does everything they can well.
+    public int MaxMoves; // An expected amount of moves left assuming the player does everything they can well.
     public int BestSubatomCount; // The best amount of subatoms to be left while keeping a neutral charge. Calculation should be Absolute value of Protons - Electrons. Neutrons may be ignored for this score.
 }
 
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public GameObject neutronUI;
     public GameObject moveUI;
     public GameObject subatomUI;
+    public GameObject seedUI;
 
     [SerializeField]
     GameObject shakeScreenToggle;
@@ -68,9 +69,10 @@ public class GameManager : MonoBehaviour
     public void ScoreUIUpdate(ScoreManager score)
     {
         chargeUI.GetComponent<TMP_Text>().text = "Charge: " + score.ChargeScore;
-        neutronUI.GetComponent<TMP_Text>().text = "Neutrons: " + score.NeutronScore;
-        moveUI.GetComponent<TMP_Text>().text = "Moves: " + score.MovesLeft;
-        subatomUI.GetComponent<TMP_Text>().text = "Subatoms: " + score.SubatomsLeft;
+        neutronUI.GetComponent<TMP_Text>().text = "Neutrons: " + score.NeutronScore + "/" + score.MostNeutrons;
+        moveUI.GetComponent<TMP_Text>().text = "Moves: " + score.MovesLeft + "/" + score.MaxMoves;
+        subatomUI.GetComponent<TMP_Text>().text = "Subatoms: " + score.SubatomsLeft + " Best: " + score.BestSubatomCount;
+        seedUI.GetComponent<TMP_Text>().text = "Seed: " + GetComponent<LevelGenerator>().seed;
     }
 
     public void UpdateUI(int currentPage)

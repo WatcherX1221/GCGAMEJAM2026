@@ -83,9 +83,9 @@ public class LevelGenerator : MonoBehaviour
         scoreManager.MostNeutrons = GameObject.FindGameObjectsWithTag("Neutron").Length;
         savedScores.MostNeutrons = scoreManager.MostNeutrons;
         Debug.Log("Most Neutrons" + scoreManager.MostNeutrons);
-        scoreManager.ParMoves = scoreManager.MovesLeft;
-        savedScores.ParMoves = scoreManager.ParMoves;
-        Debug.Log("Par: " + scoreManager.ParMoves);
+        scoreManager.MaxMoves = scoreManager.MovesLeft;
+        savedScores.ParMoves = scoreManager.MaxMoves;
+        Debug.Log("Par: " + scoreManager.MaxMoves);
         scoreManager.BestSubatomCount = Mathf.Abs(GameObject.FindGameObjectsWithTag("Proton").Length - GameObject.FindGameObjectsWithTag("Electron").Length);
         savedScores.BestSubatomCount = scoreManager.BestSubatomCount;
         Debug.Log("Best SubatomCount" + scoreManager.BestSubatomCount);
